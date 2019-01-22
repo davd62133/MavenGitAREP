@@ -1,18 +1,41 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import javax.servlet.MultipartConfigElement;
+import java.io.*;
 import java.util.LinkedList;
+import static spark.Spark.*;
 
 
 public class Main {
     public static void main(String args[]){
-        LinkedList<Double> nums = Main.readFile("src\\main\\java\\test1.txt");
+        /**LinkedList<Double> nums = Main.readFile("src\\main\\java\\test1.txt");
         System.out.println("Media de la prueba 1: " + String.valueOf(medium(nums)));
         System.out.println("Desviacion Estandar de la prueba 1: " + String.valueOf(standardDesviation(nums)));
         nums = Main.readFile("src\\main\\java\\test2.txt");
         System.out.println("Media de la prueba 2: " + String.valueOf(medium(nums)));
-        System.out.println("Desviacion Estandar de la prueba 2: " + String.valueOf(standardDesviation(nums)));
+        System.out.println("Desviacion Estandar de la prueba 2: " + String.valueOf(standardDesviation(nums)));**/
+        port(getPort());
+        staticFiles.location("/");
+        //get("/hello", (req,res) -> "Hello Heroku");
+
+        post("/num", (request, response) -> {
+            /**request.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
+            try (InputStream is = request.raw().getPart("uploaded_file").getInputStream()) {
+                // Use the input stream to create a file
+                System.out.println("Algo paso");
+            }
+            return "File uploaded";**/
+            System.out.println("Algo apso");
+            System.out.println(request.queryParams("uploadText"));
+            LinkedList<Double> nums = new LinkedList<>();
+            //for(char c : request.queryParams("uploadText")){ }
+            return "YEAH";
+        });
+    }
+
+    static int getPort(){
+        if(System.getenv("PORT") != null){
+            return Integer.parseInt(System.getenv("PORT"));
+        }
+        return 4567;
     }
 
     /**
