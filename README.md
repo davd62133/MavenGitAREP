@@ -22,6 +22,9 @@ java -cp target/taller1-1.0-SNAPSHOT.jar Main
 
 * **David Rodriguez** - *Initial work* - [PurpleBooth](https://github.com/davd62133)
 
+## Heroku
+
+http://estadisticaarep.herokuapp.com/
 
 ## License
 
