@@ -1,0 +1,1 @@
+web: java -jar target/taller1-1.0-SNAPSHOT.jar
