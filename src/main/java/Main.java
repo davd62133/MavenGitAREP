@@ -6,28 +6,37 @@ import static spark.Spark.*;
 
 public class Main {
     public static void main(String args[]){
-        /**LinkedList<Double> nums = Main.readFile("src\\main\\java\\test1.txt");
-        System.out.println("Media de la prueba 1: " + String.valueOf(medium(nums)));
-        System.out.println("Desviacion Estandar de la prueba 1: " + String.valueOf(standardDesviation(nums)));
-        nums = Main.readFile("src\\main\\java\\test2.txt");
-        System.out.println("Media de la prueba 2: " + String.valueOf(medium(nums)));
-        System.out.println("Desviacion Estandar de la prueba 2: " + String.valueOf(standardDesviation(nums)));**/
         port(getPort());
         staticFiles.location("/");
-        //get("/hello", (req,res) -> "Hello Heroku");
 
-        post("/num", (request, response) -> {
-            /**request.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
-            try (InputStream is = request.raw().getPart("uploaded_file").getInputStream()) {
-                // Use the input stream to create a file
-                System.out.println("Algo paso");
-            }
-            return "File uploaded";**/
-            System.out.println("Algo apso");
-            System.out.println(request.queryParams("uploadText"));
+        pruebas();
+        post("/resultados", (request, response) -> {
             LinkedList<Double> nums = new LinkedList<>();
-            //for(char c : request.queryParams("uploadText")){ }
-            return "YEAH";
+            String html = "<html>"
+                    +"<head>"
+                    +"<title>Resultados</title>"
+                    +"</head>"
+                    +"<body>"
+                    +"<h2>Resultados</h2><p>";
+            try{
+                for(String s : request.queryParams("uploadText").split(";")){
+                    nums.add(Double.parseDouble(s));
+                }
+                html +=
+                    "Datos ingresados: " + nums + "<p>"
+                    +"La media de los datos es: " + medium(nums) + "<p>"
+                    +"La desviacion estandar de los datos es: " + standardDesviation(nums) + "<p>"
+                    +"<a href=\"/index.html\"><button>Volver</button></a>"
+                    +"</body>"
+                    +"</html>";
+            }catch (Exception e){
+                html +=
+                        "Ingreso mal los resultados, recuerde que para un decimal es un punto ('.'), y no se puede ingresar cadenas de letras <p>"
+                         +"<a href=\"/index.html\"><button>Volver</button></a>"
+                         +"</body>"
+                         +"</html>";
+            }
+            return html;
         });
     }
 
@@ -36,6 +45,32 @@ public class Main {
             return Integer.parseInt(System.getenv("PORT"));
         }
         return 4567;
+    }
+
+
+    private static void pruebas(){
+        final String html = "<html>"
+                +"<head>"
+                +"<title>Resultados</title>"
+                +"</head>"
+                +"<body>"
+                +"<h2>Resultados</h2><p>";
+        get("/prueba1", (req,res) -> {
+            LinkedList<Double> nums = Main.readFile("src\\main\\java\\test1.txt");
+            return  html + "Datos ingresados: " + nums + "<p>"
+                    +"La media de los datos es: " + medium(nums) + "<p>"
+                    +"La desviacion estandar de los datos es: " + standardDesviation(nums) + "<p>"
+                    +"<a href=\"/index.html\"><button>Volver</button></a>"
+                    +"</body>"
+                    +"</html>";});
+        get("/prueba2", (req,res)->{
+            LinkedList<Double> nums = Main.readFile("src\\main\\java\\test2.txt");
+           return html +"Datos ingresados: " + nums + "<p>"
+                   +"La media de los datos es: " + medium(nums) + "<p>"
+                   +"La desviacion estandar de los datos es: " + standardDesviation(nums) + "<p>"
+                   +"<a href=\"/index.html\"><button>Volver</button></a>"
+                   +"</body>"
+                   +"</html>";});
     }
 
     /**
